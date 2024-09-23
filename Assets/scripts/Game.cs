@@ -32,6 +32,12 @@ public class Game : MonoBehaviour
 
     private GAMESTATE gameState = GAMESTATE.UNKNOWN;
 
+    private void Awake()
+    {
+        QualitySettings.vSyncCount = 0; 
+        Application.targetFrameRate = 60;
+    }
+
     void Start()
     {
         gameGrid.Initialize();
@@ -111,7 +117,9 @@ public class Game : MonoBehaviour
             Vector3 touch3D = worldCamera.ScreenToWorldPoint(touchPos);
             Vector3Int touch2D = gameGrid.WorldToCell(touch3D);
 
+#if UNITY_EDITOR
             Debug.Log("touched pos = " + touch3D + " => " + touch2D);
+#endif
             if (gameGrid.IsValidPosition(touch2D))
             {
                 mFirstTilePos = touch2D;
