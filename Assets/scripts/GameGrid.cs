@@ -128,27 +128,27 @@ public class GameGrid : MonoBehaviour
         return gridObjects[pX][pY];
     }
 
-    public void DestroyObjectAtPos(Vector3Int pPos)
+    public void DestroyObjectAtPos(Vector3Int pPos, UnityAction<GameObject> pOnDestroy)
     {
-        DestroyObjectAtPos(pPos.x, pPos.y);
+        DestroyObjectAtPos(pPos.x, pPos.y, pOnDestroy);
     }
 
-    public void DestroyObjectAtPos(int pX, int pY)
+    public void DestroyObjectAtPos(int pX, int pY, UnityAction<GameObject> pOnDestroy)
     {
         if (gridObjects[pX][pY] == null) return;
 
         Cube thisObject = gridObjects[pX][pY];
 
-        GameObject.Destroy(thisObject.gameObject);
         gridObjects[pX][pY] = null;
+        pOnDestroy(thisObject.gameObject);
     }
 
-    public void DestroyObject(Cube pThisObject)
+    public void DestroyObject(Cube pThisObject, UnityAction<GameObject> pOnDestroy)
     {
         if (gridObjects[pThisObject.gridX][pThisObject.gridY] == null) return;
 
-        GameObject.Destroy(pThisObject.gameObject);
         gridObjects[pThisObject.gridX][pThisObject.gridY] = null;
+        pOnDestroy(pThisObject.gameObject);
     }
 
     public bool IsValidPosition(Vector3Int pPos)
@@ -164,7 +164,7 @@ public class GameGrid : MonoBehaviour
         newTileMover.target = pTarget;
         newTileMover.refGrid = grid;
         newTileMover.endPos = pEndPos;
-        newTileMover.moveLayerIndex = pZ;
+        newTileMover.moveLayerIndex = pTarget.transform.position.z + pZ;
         newTileMover.movementSpeed = pTarget.movementSpeed;
         newTileMover.Start(() =>
         {
