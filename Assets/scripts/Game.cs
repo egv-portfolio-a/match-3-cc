@@ -23,6 +23,7 @@ public class Game : MonoBehaviour
 
     public CC_GameGrid gameGrid;
     public Camera worldCamera;
+    public TileDestroyer tileDestroyer;
 
     public GameObject debugObj;
 
@@ -241,7 +242,7 @@ public class Game : MonoBehaviour
                 columnsToAdjust[tile.gridX] = tile.gridY;
             }
 
-            gameGrid.DestroyObject(tile);
+            gameGrid.DestroyObject(tile, OnDestroyTile);
         }
 
         foreach(KeyValuePair<int, int> column in columnsToAdjust)
@@ -317,5 +318,10 @@ public class Game : MonoBehaviour
         }
 
         return retVal;
+    }
+
+    void OnDestroyTile(GameObject thisTile)
+    {
+        tileDestroyer.Destroy(thisTile);
     }
 }
